@@ -2,7 +2,7 @@ import  React, { useState, useEffect, useRef } from 'react';
 import TodoCreator from "./FormInput";
 import TodoList from "./List";
 import { createMuiTheme } from "@material-ui/core/styles";
-
+import axios from "axios";
 
 const theme = createMuiTheme({
     palette: {
@@ -10,30 +10,27 @@ const theme = createMuiTheme({
     },
 });
 
+const client = axios.create({
+    baseURL: "https://nl4jlozjo6.execute-api.eu-west-2.amazonaws.com/Prod/todos/" 
+  });
+
 const Form = () => {
 
     const [ newTodo, setNewTodo ] = useState('');
-    const [ todos, setTodos ] = useState([
-        {
-            text: "Learn about React",
-            isCompleted: false,
-            isEditing: false
-        },
-        {
-            text: "Meet friend for lunch",
-            isCompleted: false,
-            isEditing: false
-        },
-        {
-            text: "Build really cool todo app",
-            isCompleted: false,
-            isEditing: false
-        }
-    ]);
+    const [ todos, setTodos ] = useState([]);
     const inputRef = useRef();
     const noteRef = useRef({});
     const [ isInputEmpty, setInputEmpty ] = useState(false)
 
+
+    React.useEffect(() => {
+        async function getPost() {
+          const response = await client.get("/");
+          console.log(response.data)
+          setTodos(response.data);
+        }
+        getPost();
+      }, []);
 
     const handleSubmit = e => {
         e.preventDefault();

@@ -47,7 +47,7 @@ const TodoList = ({ theme, todos, completeTodo, editTodo, deleteTodo, saveTodo, 
         <ThemeProvider theme={theme}>
             <List className={classes.root}>
             {todos.map((todo, inx) => {
-                const labelId = `list-todo-${todo}`;
+                const labelId = `list-todo-${todo.id}`;
 
                 return (
                     <ListItem
@@ -61,7 +61,7 @@ const TodoList = ({ theme, todos, completeTodo, editTodo, deleteTodo, saveTodo, 
                             <Checkbox
                                 color="primary"
                                 edge="start"
-                                checked={checked.indexOf(todo) !== -1}
+                                checked={todo.isDone === true}
                                 tabIndex={-1}
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
@@ -74,7 +74,7 @@ const TodoList = ({ theme, todos, completeTodo, editTodo, deleteTodo, saveTodo, 
                                 <>
                                     <ListItemText
                                         id={labelId}
-                                        primary={`${todo.text}`}
+                                        primary={`${todo.title} - ${todo.description}`}
                                         style={{textDecoration: todo.isCompleted ? "line-through" : ""}}
                                     />
                                     <ListItemIcon>
